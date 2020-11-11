@@ -1,0 +1,16 @@
+{
+  "_lookup": ["name"],
+  "name": "remote_registration_profiles",
+  "_values": [
+    {
+      "_lookup": ["name"],
+      "_translate": ["label", "description"],
+      "name": "WCRC",
+      "label": "WCRC Default",
+      "description": "",
+      "filter": "0",
+      "is_reserved": "1",
+      "is_active": "1"
+    }
+  ]
+}
