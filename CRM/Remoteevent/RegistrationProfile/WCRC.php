@@ -106,7 +106,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 60,
                 'required'    => 1,
-                'options'     => $this->getOptions('prefix_id', $locale),
+                'options'     => $this->getOptions('individual_prefix', $locale),
                 'label'       => $l10n->localise('Prefix'),
                 'parent'      => 'contact_base'
             ],
@@ -160,7 +160,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 110,
                 'required'    => 1,
-                'options'     => $this->getOptions('state_province_id', $locale),
+                'options'     => $this->getStateProvinces($locale),
                 'label'       => $l10n->localise('Prefix'),
                 'parent'      => 'contact_address'
             ],
@@ -170,7 +170,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 120,
                 'required'    => 1,
-                'options'     => $this->getOptions('country_id', $locale),
+                'options'     => $this->getCountries($locale),
                 'label'       => $l10n->localise('Country'),
                 'parent'      => 'contact_address'
             ],
@@ -225,7 +225,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 160,
                 'required'    => 1,
-                'options'     => $this->getOptions('preferred_language', $locale),
+                'options'     => $this->getOptions('languages', $locale),
                 'label'       => $l10n->localise('Preferred Language'),
                 'parent'      => 'language',
             ],
