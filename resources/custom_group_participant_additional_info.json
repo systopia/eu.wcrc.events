@@ -111,7 +111,7 @@
       "_translate": ["label"],
       "weight": "6",
       "name": "dietary_restrictions",
-      "column_name": "dietary_restrictions",
+      "column_name": "dietary_restriction",
       "label": "Dietary Restrictions",
       "data_type": "String",
       "html_type": "Text",
