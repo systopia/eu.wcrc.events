@@ -14,8 +14,9 @@
 +--------------------------------------------------------*/
 
 use CRM_Events_ExtensionUtil as E;
-use \Civi\RemoteParticipant\Event\ValidateEvent as ValidateEvent;
+use Civi\RemoteParticipant\Event\ValidateEvent as ValidateEvent;
 use Civi\RemoteParticipant\Event\GetCreateParticipantFormEvent as GetCreateParticipantFormEvent;
+use Civi\RemoteParticipant\Event\RegistrationEvent as RegistrationEvent;
 
 /**
  * Implements default WCRC profile
@@ -421,21 +422,27 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'spanish'                     => 'infos_contact.spanish',
                 'indonesian'                  => 'infos_contact.indonesian',
                 'korean'                      => 'infos_contact.korean',
-                'arrival_time'                => 'participant_additional_info.arrival_time',
-                'departure_time'              => 'participant_additional_info.departure_time',
-                'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
-                'arrival_type'                => 'participant_additional_info.arrival_type',
-                'departure_type'              => 'participant_additional_info.departure_type',
-                'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
-                'emergency_contact'           => 'participant_additional_info.emergency_contact',
-                'member_church_name'          => 'participant_additional_info.member_church_name',
-                'member_church_address'       => 'participant_additional_info.member_church_address',
             ];
             $field_list = array_flip($data_mapping);
             CRM_Events_CustomData::resolveCustomFields($field_list);
 
             // adn then use the generic function
             $this->addDefaultContactValues($resultsEvent, array_keys($field_list), $field_list);
+
+
+            // todo: add participant defaults ?? does one exist at this point?
+            if ($resultsEvent->getParticipantID()) {
+                // these are participant values - but a participant doesn't exist at this point
+                //                'arrival_time'                => 'participant_additional_info.arrival_time',
+                //                'departure_time'              => 'participant_additional_info.departure_time',
+                //                'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
+                //                'arrival_type'                => 'participant_additional_info.arrival_type',
+                //                'departure_type'              => 'participant_additional_info.departure_type',
+                //                'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
+                //                'emergency_contact'           => 'participant_additional_info.emergency_contact',
+                //                'member_church_name'          => 'participant_additional_info.member_church_name',
+                //                'member_church_address'       => 'participant_additional_info.member_church_address',
+            }
         }
     }
 
@@ -451,6 +458,84 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
     public function validateSubmission($validationEvent)
     {
         parent::validateSubmission($validationEvent);
+
+        // todo: custom validation in here
+
+    }
+
+    /**
+     * Allows us to apply the data for the contact just before it's being created
+     *
+     * @param $registration RegistrationEvent
+     *   registration event
+     */
+    public static function applySubmissionToContact($registration)
+    {
+        // map registration fields to custom fields
+        $contact_data = &$registration->getContactData();
+        $submission = $registration->getSubmission();
+        $mapping = [
+            'first_name_official'         => 'additional_name_information.first_name_official',
+            'middle_name_official'        => 'additional_name_information.middle_name_official',
+            'last_name_official'          => 'additional_name_information.last_name_official',
+            'preferred_name'              => 'additional_name_information.preferred_name',
+            'formal_title'                => 'formal_title',
+            'prefix_id'                   => 'prefix_id',
+            'birth_date'                  => 'birth_date',
+            'street_address'              => 'street_address',
+            'city'                        => 'city',
+            'postal_code'                 => 'postal_code',
+            'state_province_id'           => 'state_province_id',
+            'country_id'                  => 'country_id',
+            'email'                       => 'email',
+            'phone'                       => 'phone',
+            'mother_language'             => 'infos_contact.mother_language',
+            'preferred_language'          => 'infos_contact.preferred_language',
+            'english'                     => 'infos_contact.english',
+            'german'                      => 'infos_contact.german',
+            'french'                      => 'infos_contact.french',
+            'spanish'                     => 'infos_contact.spanish',
+            'indonesian'                  => 'infos_contact.indonesian',
+            'korean'                      => 'infos_contact.korean',
+        ];
+        foreach ($mapping as $registration_field => $contact_custom_field) {
+            if (isset($submission[$registration_field])) {
+                $contact_data[$contact_custom_field] = $submission[$registration_field];
+            }
+        }
+
+        // todo: format/transform data?
+
+        // todo: anything else?
+    }
+
+
+    /**
+     * Allows us to apply the data for the participant just before it's being created
+     *
+     * @param $registration RegistrationEvent
+     *   registration event
+     */
+    public static function applySubmissionToParticipant($registration)
+    {
+        // map registration fields to custom fields
+        $mapping = [
+            'arrival_time'                => 'participant_additional_info.arrival_time',
+            'departure_time'              => 'participant_additional_info.departure_time',
+            'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
+            'arrival_type'                => 'participant_additional_info.arrival_type',
+            'departure_type'              => 'participant_additional_info.departure_type',
+            'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
+            'emergency_contact'           => 'participant_additional_info.emergency_contact',
+            'member_church_name'          => 'participant_additional_info.member_church_name',
+            'member_church_address'       => 'participant_additional_info.member_church_address',
+        ];
+        $participant_data = &$registration->getParticipant();
+        foreach ($mapping as $registration_key => $custom_field) {
+            $participant_data[$custom_field] = CRM_Utils_Array::value($registration_key, $participant_data, '');
+        }
+
+        // todo: anything else?
 
     }
 }

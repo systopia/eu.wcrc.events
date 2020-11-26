@@ -25,6 +25,15 @@ use CRM_Events_ExtensionUtil as E;
  */
 function events_civicrm_config(&$config) {
   _events_civix_civicrm_config($config);
+
+    // register events (with our own wrapper to avoid duplicate registrations)
+    $dispatcher = new \Civi\RemoteDispatcher();
+    $dispatcher->addUniqueListener(
+        'civi.remoteevent.registration.submit',
+        ['CRM_Remoteevent_RegistrationProfile_WCRC', 'applySubmissionToContact'], CRM_Remoteevent_Registration::BEFORE_CONTACT_IDENTIFICATION);
+    $dispatcher->addUniqueListener(
+        'civi.remoteevent.registration.submit',
+        ['CRM_Remoteevent_RegistrationProfile_WCRC', 'applySubmissionToParticipant'], CRM_Remoteevent_Registration::BEFORE_PARTICIPANT_CREATION);
 }
 
 /**
