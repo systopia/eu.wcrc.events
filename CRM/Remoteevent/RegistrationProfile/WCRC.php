@@ -30,7 +30,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
      */
     public function getName()
     {
-        return 'WCRC Default';
+        return 'WCRC';
     }
 
     /**
