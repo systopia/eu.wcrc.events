@@ -58,8 +58,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 10,
                 'required'    => 1,
-                'label'       => $l10n->localise('First name official'),
-                'description' => $l10n->localise("First name (according to official document)"),
+                'label'       => $l10n->localise('First name (official)'),
+                'description' => $l10n->localise("First name according to official document"),
                 'parent'      => 'contact_base'
             ],
             'middle_name_official'   => [
@@ -68,8 +68,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 20,
                 'required'    => 0,
-                'label'       => $l10n->localise('Middle name official'),
-                'description' => $l10n->localise("Middle name (according to official document)"),
+                'label'       => $l10n->localise('Middle name (official)'),
+                'description' => $l10n->localise("Middle name according to official document"),
                 'parent'      => 'contact_base'
             ],
             'last_name_official'    => [
@@ -78,8 +78,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 30,
                 'required'    => 1,
-                'label'       => $l10n->localise('Last name official'),
-                'description' => $l10n->localise("Last name (according to official document"),
+                'label'       => $l10n->localise('Last name (official)'),
+                'description' => $l10n->localise("Last name according to official document"),
                 'parent'      => 'contact_base'
             ],
             'preferred_name'    => [
@@ -88,8 +88,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 40,
                 'required'    => 1,
-                'label'       => $l10n->localise('Last name official'),
-                'description' => $l10n->localise("Last name (according to official document"),
+                'label'       => $l10n->localise('Last name (official)'),
+                'description' => $l10n->localise("Last name according to official document"),
                 'parent'      => 'contact_base'
             ],
             'formal_title'    => [
@@ -155,24 +155,24 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'label'       => $l10n->localise('Postal Code'),
                 'parent'      => 'contact_address'
             ],
-            'state_province_id'    => [
-                'name'        => 'state_province_id',
-                'type'        => 'Select',
-                'validation'  => '',
-                'weight'      => 110,
-                'required'    => 1,
-                'options'     => $this->getStateProvinces($locale),
-                'label'       => $l10n->localise('Prefix'),
-                'parent'      => 'contact_address'
-            ],
             'country_id'    => [
                 'name'        => 'country_id',
                 'type'        => 'Select',
                 'validation'  => '',
-                'weight'      => 120,
+                'weight'      => 110,
                 'required'    => 1,
                 'options'     => $this->getCountries($locale),
                 'label'       => $l10n->localise('Country'),
+                'parent'      => 'contact_address'
+            ],
+            'state_province_id'    => [
+                'name'        => 'state_province_id',
+                'type'        => 'Select',
+                'validation'  => '',
+                'weight'      => 120,
+                'required'    => 1,
+                'options'     => $this->getStateProvinces($locale),
+                'label'       => $l10n->localise('State or Province'),
                 'parent'      => 'contact_address'
             ],
 
