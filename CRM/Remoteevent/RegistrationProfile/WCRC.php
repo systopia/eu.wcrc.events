@@ -88,8 +88,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 40,
                 'required'    => 1,
-                'label'       => $l10n->localise('Last name (official)'),
-                'description' => $l10n->localise("Last name according to official document"),
+                'label'       => $l10n->localise('Preferred First Name'),
+                'description' => $l10n->localise("Which first name do you prefer?"),
                 'parent'      => 'contact_base'
             ],
             'formal_title'    => [
@@ -422,7 +422,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'email'                       => 'email',
                 'phone'                       => 'phone',
                 'mother_language'             => 'infos_contact.mother_language',
-                'preferred_language'          => 'infos_contact.preferred_language',
+                'preferred_language'          => 'preferred_language',
                 'english'                     => 'infos_contact.english',
                 'german'                      => 'infos_contact.german',
                 'french'                      => 'infos_contact.french',
@@ -435,21 +435,6 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
 
             // adn then use the generic function
             $this->addDefaultContactValues($resultsEvent, array_keys($field_list), $field_list);
-
-
-            // todo: add participant defaults ?? does one exist at this point?
-            if ($resultsEvent->getParticipantID()) {
-                // these are participant values - but a participant doesn't exist at this point
-                //                'arrival_time'                => 'participant_additional_info.arrival_time',
-                //                'departure_time'              => 'participant_additional_info.departure_time',
-                //                'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
-                //                'arrival_type'                => 'participant_additional_info.arrival_type',
-                //                'departure_type'              => 'participant_additional_info.departure_type',
-                //                'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
-                //                'emergency_contact'           => 'participant_additional_info.emergency_contact',
-                //                'member_church_name'          => 'participant_additional_info.member_church_name',
-                //                'member_church_address'       => 'participant_additional_info.member_church_address',
-            }
         }
     }
 
@@ -497,7 +482,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
             'email'                       => 'email',
             'phone'                       => 'phone',
             'mother_language'             => 'infos_contact.mother_language',
-            'preferred_language'          => 'infos_contact.preferred_language',
+            'preferred_language'          => 'preferred_language',
             'english'                     => 'infos_contact.english',
             'german'                      => 'infos_contact.german',
             'french'                      => 'infos_contact.french',
@@ -511,6 +496,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
             }
         }
 
+        // todo: derive CiviCRM name fields (first_name, last_name, middle_name from the ones above)
         // todo: format/transform data?
 
         // todo: anything else?
