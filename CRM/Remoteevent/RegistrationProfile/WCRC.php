@@ -230,6 +230,13 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'label'       => $l10n->localise('Preferred Language'),
                 'parent'      => 'language',
             ],
+            'spoken_language' => [
+                'type'        => 'fieldset',
+                'name'        => 'spoken_language',
+                'label'       => $l10n->localise("Languages Spoken"),
+                'weight'      => 180,
+                'description' => '',
+            ],
             'english' => [
                 'name'        => 'english',
                 'type'        => 'Checkbox',
@@ -237,7 +244,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 200,
                 'required'    => 0,
                 'label'       => $l10n->localise('English'),
-                'parent'      => 'language',
+                'parent'      => 'spoken_language',
             ],
             'german' => [
                 'name'        => 'german',
@@ -246,7 +253,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 210,
                 'required'    => 0,
                 'label'       => $l10n->localise('German'),
-                'parent'      => 'language',
+                'parent'      => 'spoken_language',
             ],
             'french' => [
                 'name'        => 'french',
@@ -255,7 +262,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 220,
                 'required'    => 0,
                 'label'       => $l10n->localise('French'),
-                'parent'      => 'language',
+                'parent'      => 'spoken_language',
             ],
             'spanish' => [
                 'name'        => 'spanish',
@@ -264,7 +271,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 230,
                 'required'    => 0,
                 'label'       => $l10n->localise('Spanish'),
-                'parent'      => 'language',
+                'parent'      => 'spoken_language',
             ],
             'indonesian' => [
                 'name'        => 'indonesian',
@@ -273,7 +280,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 240,
                 'required'    => 0,
                 'label'       => $l10n->localise('Indonesian'),
-                'parent'      => 'language',
+                'parent'      => 'spoken_language',
             ],
             'korean' => [
                 'name'        => 'korean',
@@ -282,7 +289,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 240,
                 'required'    => 0,
                 'label'       => $l10n->localise('Korean'),
-                'parent'      => 'language',
+                'parent'      => 'spoken_language',
             ],
 
             #Transportation Information
