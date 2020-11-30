@@ -236,6 +236,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'label'       => $l10n->localise("Languages Spoken"),
                 'weight'      => 180,
                 'description' => '',
+                'parent'      => 'language',
             ],
             'english' => [
                 'name'        => 'english',
