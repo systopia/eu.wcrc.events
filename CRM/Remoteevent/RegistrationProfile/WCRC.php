@@ -302,8 +302,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
             ],
             'arrival_time'    => [
                 'name'        => 'arrival_time',
-                'type'        => 'Date',
-                'validation'  => 'Date',
+                'type'        => 'DateTime',
+                'validation'  => 'Timestamp',
                 'weight'      => 230,
                 'required'    => 1,
                 'label'       => $l10n->localise('Arrival time'),
@@ -311,8 +311,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
             ],
             'departure_time'    => [
                 'name'        => 'departure_time',
-                'type'        => 'Date',
-                'validation'  => 'Date',
+                'type'        => 'DateTime',
+                'validation'  => 'Timestamp',
                 'weight'      => 240,
                 'required'    => 1,
                 'label'       => $l10n->localise('Departure time'),
@@ -320,8 +320,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
             ],
             'departure_time_home_country'    => [
                 'name'        => 'departure_time_home_country',
-                'type'        => 'Date',
-                'validation'  => 'Date',
+                'type'        => 'DateTime',
+                'validation'  => 'Timestamp',
                 'weight'      => 250,
                 'required'    => 1,
                 'label'       => $l10n->localise('Departure time home country'),
