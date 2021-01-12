@@ -14,15 +14,56 @@
 +--------------------------------------------------------*/
 
 use CRM_Events_ExtensionUtil as E;
-use Civi\RemoteParticipant\Event\ValidateEvent as ValidateEvent;
-use Civi\RemoteParticipant\Event\GetCreateParticipantFormEvent as GetCreateParticipantFormEvent;
+use Civi\RemoteParticipant\Event\ChangingEvent as ChangingEvent;
 use Civi\RemoteParticipant\Event\RegistrationEvent as RegistrationEvent;
+use Civi\RemoteParticipant\Event\UpdateEvent as UpdateEvent;
+use Civi\RemoteParticipant\Event\ValidateEvent as ValidateEvent;
+use Civi\RemoteParticipant\Event\GetParticipantFormEventBase as GetParticipantFormEventBase;
 
 /**
  * Implements default WCRC profile
  */
 class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_RegistrationProfile
 {
+    /** @var array maps the form fields to contact fields */
+    const CONTACT_MAPPING = [
+        'first_name_official'         => 'additional_name_information.first_name_official',
+        'middle_name_official'        => 'additional_name_information.middle_name_official',
+        'last_name_official'          => 'additional_name_information.last_name_official',
+        'preferred_name'              => 'additional_name_information.preferred_name',
+        'formal_title'                => 'formal_title',
+        'prefix_id'                   => 'prefix_id',
+        'birth_date'                  => 'birth_date',
+        'street_address'              => 'street_address',
+        'city'                        => 'city',
+        'postal_code'                 => 'postal_code',
+        'state_province_id'           => 'state_province_id',
+        'country_id'                  => 'country_id',
+        'email'                       => 'email',
+        'phone'                       => 'phone',
+        'mother_language'             => 'infos_contact.mother_language',
+        'preferred_language'          => 'preferred_language',
+        'english'                     => 'infos_contact.english',
+        'german'                      => 'infos_contact.german',
+        'french'                      => 'infos_contact.french',
+        'spanish'                     => 'infos_contact.spanish',
+        'indonesian'                  => 'infos_contact.indonesian',
+        'korean'                      => 'infos_contact.korean',
+    ];
+
+    /** @var array maps the form fields to participant fields */
+    const PARTICIPANT_MAPPING = [
+        'arrival_time'                => 'participant_additional_info.arrival_time',
+        'departure_time'              => 'participant_additional_info.departure_time',
+        'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
+        'arrival_type'                => 'participant_additional_info.arrival_type',
+        'departure_type'              => 'participant_additional_info.departure_type',
+        'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
+        'emergency_contact'           => 'participant_additional_info.emergency_contact',
+        'member_church_name'          => 'participant_additional_info.member_church_name',
+        'member_church_address'       => 'participant_additional_info.member_church_address',
+    ];
+
     /**
      * Get the internal name of the profile represented
      *
@@ -399,38 +440,15 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
      * Add the default values to the form data, so people using this profile
      *  don't have to enter everything themselves
      *
-     * @param GetCreateParticipantFormEvent $resultsEvent
+     * @param GetParticipantFormEventBase $resultsEvent
      *   the locale to use, defaults to null none. Use 'default' for current
      *
      */
-    public function addDefaultValues(GetCreateParticipantFormEvent $resultsEvent)
+    public function addDefaultValues(GetParticipantFormEventBase $resultsEvent)
     {
         if ($resultsEvent->getContactID()) {
             // get contact field list from that
-            $data_mapping = [
-                'first_name_official'         => 'additional_name_information.first_name_official',
-                'middle_name_official'        => 'additional_name_information.middle_name_official',
-                'last_name_official'          => 'additional_name_information.last_name_official',
-                'preferred_name'              => 'additional_name_information.preferred_name',
-                'formal_title'                => 'formal_title',
-                'prefix_id'                   => 'prefix_id',
-                'birth_date'                  => 'birth_date',
-                'street_address'              => 'street_address',
-                'city'                        => 'city',
-                'postal_code'                 => 'postal_code',
-                'state_province_id'           => 'state_province_id',
-                'country_id'                  => 'country_id',
-                'email'                       => 'email',
-                'phone'                       => 'phone',
-                'mother_language'             => 'infos_contact.mother_language',
-                'preferred_language'          => 'preferred_language',
-                'english'                     => 'infos_contact.english',
-                'german'                      => 'infos_contact.german',
-                'french'                      => 'infos_contact.french',
-                'spanish'                     => 'infos_contact.spanish',
-                'indonesian'                  => 'infos_contact.indonesian',
-                'korean'                      => 'infos_contact.korean',
-            ];
+            $data_mapping = self::CONTACT_MAPPING;
             $field_list = array_flip($data_mapping);
             CRM_Events_CustomData::resolveCustomFields($field_list);
 
@@ -453,7 +471,6 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
         parent::validateSubmission($validationEvent);
 
         // todo: custom validation in here
-
     }
 
     /**
@@ -467,30 +484,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
         // map registration fields to custom fields
         $contact_data = &$registration->getContactData();
         $submission = $registration->getSubmission();
-        $mapping = [
-            'first_name_official'         => 'additional_name_information.first_name_official',
-            'middle_name_official'        => 'additional_name_information.middle_name_official',
-            'last_name_official'          => 'additional_name_information.last_name_official',
-            'preferred_name'              => 'additional_name_information.preferred_name',
-            'formal_title'                => 'formal_title',
-            'prefix_id'                   => 'prefix_id',
-            'birth_date'                  => 'birth_date',
-            'street_address'              => 'street_address',
-            'city'                        => 'city',
-            'postal_code'                 => 'postal_code',
-            'state_province_id'           => 'state_province_id',
-            'country_id'                  => 'country_id',
-            'email'                       => 'email',
-            'phone'                       => 'phone',
-            'mother_language'             => 'infos_contact.mother_language',
-            'preferred_language'          => 'preferred_language',
-            'english'                     => 'infos_contact.english',
-            'german'                      => 'infos_contact.german',
-            'french'                      => 'infos_contact.french',
-            'spanish'                     => 'infos_contact.spanish',
-            'indonesian'                  => 'infos_contact.indonesian',
-            'korean'                      => 'infos_contact.korean',
-        ];
+        $mapping = self::CONTACT_MAPPING;
         foreach ($mapping as $registration_field => $contact_custom_field) {
             if (isset($submission[$registration_field])) {
                 $contact_data[$contact_custom_field] = $submission[$registration_field];
@@ -499,7 +493,6 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
 
         // todo: derive CiviCRM name fields (first_name, last_name, middle_name from the ones above)
         // todo: format/transform data?
-
         // todo: anything else?
     }
 
@@ -513,18 +506,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
     public static function applySubmissionToParticipant($registration)
     {
         // map registration fields to custom fields
-        $mapping = [
-            'arrival_time'                => 'participant_additional_info.arrival_time',
-            'departure_time'              => 'participant_additional_info.departure_time',
-            'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
-            'arrival_type'                => 'participant_additional_info.arrival_type',
-            'departure_type'              => 'participant_additional_info.departure_type',
-            'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
-            'emergency_contact'           => 'participant_additional_info.emergency_contact',
-            'member_church_name'          => 'participant_additional_info.member_church_name',
-            'member_church_address'       => 'participant_additional_info.member_church_address',
-        ];
-        $participant_data = &$registration->getParticipant();
+        $mapping = self::PARTICIPANT_MAPPING;
+        $participant_data = &$registration->getParticipantData();
         foreach ($mapping as $registration_key => $custom_field) {
             $participant_data[$custom_field] = CRM_Utils_Array::value($registration_key, $participant_data, '');
         }
