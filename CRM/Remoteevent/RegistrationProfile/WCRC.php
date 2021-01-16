@@ -51,6 +51,13 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
         'korean'                      => 'infos_contact.korean',
     ];
 
+    /** @var array extra mapping to map the names not only to the official fields */
+    const CONTACT_NAME_MAPPING = [
+        'first_name_official'         => 'first_name',
+        'middle_name_official'        => 'middle_name',
+        'last_name_official'          => 'last_name',
+    ];
+
     /** @var array maps the form fields to participant fields */
     const PARTICIPANT_MAPPING = [
         'arrival_time'                => 'participant_additional_info.arrival_time',
@@ -267,7 +274,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 160,
                 'required'    => 1,
-                'options'     => $this->getOptions('languages', $locale),
+                'options'     => $this->getOptions('languages', $locale, [], true),
                 'label'       => $l10n->localise('Preferred Language'),
                 'parent'      => 'language',
             ],
@@ -484,14 +491,26 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
         // map registration fields to custom fields
         $contact_data = &$registration->getContactData();
         $submission = $registration->getSubmission();
-        $mapping = self::CONTACT_MAPPING;
-        foreach ($mapping as $registration_field => $contact_custom_field) {
+        foreach (self::CONTACT_MAPPING as $registration_field => $contact_custom_field) {
             if (isset($submission[$registration_field])) {
                 $contact_data[$contact_custom_field] = $submission[$registration_field];
             }
         }
 
-        // todo: derive CiviCRM name fields (first_name, last_name, middle_name from the ones above)
+        // add CiviCRM default names
+        foreach (self::CONTACT_NAME_MAPPING as $registration_field => $contact_field) {
+            if (!empty($submission[$registration_field])) {
+                $contact_data[$contact_field] = $submission[$registration_field];
+            }
+        }
+
+        // format the state_province_id
+        if (!empty($contact_data['state_province_id'])) {
+            if (preg_match('/^[0-9]+-([0-9]+)$/', $contact_data['state_province_id'], $match)) {
+                $contact_data['state_province_id'] = $match[1];
+            }
+        }
+
         // todo: format/transform data?
         // todo: anything else?
     }
