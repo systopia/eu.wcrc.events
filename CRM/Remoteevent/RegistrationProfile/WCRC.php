@@ -247,7 +247,8 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 140,
                 'required'    => 0,
                 'label'       => $l10n->localise('Phone'),
-                'parent'      => 'contact_comm'
+                'description' => $l10n->localise('Please include country code'),
+                'parent'      => 'contact_comm',
             ],
 
             #Language Information
@@ -264,8 +265,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 150,
                 'required'    => 0,
-                'label'       => $l10n->localise('Mother Language'),
-                'description' => $l10n->localise("Your Mother Tongue"),
+                'label'       => $l10n->localise('Mother Tongue'),
                 'parent'      => 'language',
             ],
             'preferred_language'    => [
@@ -348,22 +348,22 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'label'       => $l10n->localise("Transportation Information"),
                 'weight'      => 50,
             ],
-            'arrival_time'    => [
-                'name'        => 'arrival_time',
-                'type'        => 'Datetime',
-                'validation'  => 'Timestamp',
-                'weight'      => 230,
-                'required'    => 1,
-                'label'       => $l10n->localise('Arrival time'),
-                'parent'      => 'transportation_info'
-            ],
             'departure_time'    => [
                 'name'        => 'departure_time',
                 'type'        => 'Datetime',
                 'validation'  => 'Timestamp',
-                'weight'      => 240,
+                'weight'      => 230,
                 'required'    => 1,
                 'label'       => $l10n->localise('Departure time'),
+                'parent'      => 'transportation_info'
+            ],
+            'arrival_time'    => [
+                'name'        => 'arrival_time',
+                'type'        => 'Datetime',
+                'validation'  => 'Timestamp',
+                'weight'      => 240,
+                'required'    => 1,
+                'label'       => $l10n->localise('Arrival time'),
                 'parent'      => 'transportation_info'
             ],
             'departure_time_home_country'    => [
