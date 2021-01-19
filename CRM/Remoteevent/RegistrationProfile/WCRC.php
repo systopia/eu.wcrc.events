@@ -219,7 +219,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                         'hide_restricted_empty' => 1,
                         'command'               => 'restrict',
                         'regex_subject'         => 'dependent',
-                        'regex'                 => '^(<current_value>-[0-9]+)$',
+                        'regex'                 => '^({current_value}-[0-9]+)$',
                     ],
                 ],
             ],
