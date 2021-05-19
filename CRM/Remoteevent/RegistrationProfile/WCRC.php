@@ -31,6 +31,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
         'middle_name_official'        => 'additional_name_information.middle_name_official',
         'last_name_official'          => 'additional_name_information.last_name_official',
         'preferred_name'              => 'additional_name_information.preferred_name',
+        'passport_information'        => 'additional_name_information.passport_information',
         'formal_title'                => 'formal_title',
         'prefix_id'                   => 'prefix_id',
         'birth_date'                  => 'birth_date',
@@ -41,14 +42,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
         'country_id'                  => 'country_id',
         'email'                       => 'email',
         'phone'                       => 'phone',
-        'mother_language'             => 'infos_contact.mother_language',
         'preferred_language'          => 'preferred_language',
-        'english'                     => 'infos_contact.english',
-        'german'                      => 'infos_contact.german',
-        'french'                      => 'infos_contact.french',
-        'spanish'                     => 'infos_contact.spanish',
-        'indonesian'                  => 'infos_contact.indonesian',
-        'korean'                      => 'infos_contact.korean',
     ];
 
     /** @var array extra mapping to map the names not only to the official fields */
@@ -60,15 +54,13 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
 
     /** @var array maps the form fields to participant fields */
     const PARTICIPANT_MAPPING = [
-        'arrival_time'                => 'participant_additional_info.arrival_time',
-        'departure_time'              => 'participant_additional_info.departure_time',
-        'departure_time_home_country' => 'participant_additional_info.departure_time_home_country',
-        'arrival_type'                => 'participant_additional_info.arrival_type',
-        'departure_type'              => 'participant_additional_info.departure_type',
+        'departure_day_home_country'  => 'participant_additional_info.departure_day_home_country',
         'dietary_restrictions'        => 'participant_additional_info.dietary_restrictions',
         'emergency_contact'           => 'participant_additional_info.emergency_contact',
         'member_church_name'          => 'participant_additional_info.member_church_name',
         'member_church_address'       => 'participant_additional_info.member_church_address',
+        'other_language'              => 'participant_additional_info.other_language',
+        'frequent_flyer_info'         => 'participant_additional_info.frequent_flyer_info',
     ];
 
     /**
@@ -135,7 +127,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'type'        => 'Text',
                 'validation'  => '',
                 'weight'      => 40,
-                'required'    => 1,
+                'required'    => 0,
                 'label'       => $l10n->localise('Preferred First Name'),
                 'description' => $l10n->localise("Which first name do you prefer?"),
                 'parent'      => 'contact_base'
@@ -269,15 +261,6 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'weight'      => 30,
                 'description' => '',
             ],
-            'mother_language' => [
-                'name'        => 'mother_language',
-                'type'        => 'Text', #wird evtl noch geändert
-                'validation'  => '',
-                'weight'      => 150,
-                'required'    => 0,
-                'label'       => $l10n->localise('Mother Tongue'),
-                'parent'      => 'language',
-            ],
             'preferred_language'    => [
                 'name'        => 'preferred_language',
                 'type'        => 'Select',
@@ -288,124 +271,43 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'label'       => $l10n->localise('Preferred Language'),
                 'parent'      => 'language',
             ],
-            'spoken_language' => [
-                'type'        => 'fieldset',
-                'name'        => 'spoken_language',
-                'label'       => $l10n->localise("Languages Spoken"),
-                'weight'      => 180,
-                'description' => '',
-                'parent'      => 'language',
-            ],
-            'english' => [
-                'name'        => 'english',
-                'type'        => 'Checkbox',
+            'other_language' => [
+                'name'        => 'other_language',
+                'type'        => 'Text',
                 'validation'  => '',
-                'weight'      => 200,
+                'weight'      => 170,
                 'required'    => 0,
-                'label'       => $l10n->localise('English'),
-                'parent'      => 'spoken_language',
-            ],
-            'german' => [
-                'name'        => 'german',
-                'type'        => 'Checkbox',
-                'validation'  => '',
-                'weight'      => 210,
-                'required'    => 0,
-                'label'       => $l10n->localise('German'),
-                'parent'      => 'spoken_language',
-            ],
-            'french' => [
-                'name'        => 'french',
-                'type'        => 'Checkbox',
-                'validation'  => '',
-                'weight'      => 220,
-                'required'    => 0,
-                'label'       => $l10n->localise('French'),
-                'parent'      => 'spoken_language',
-            ],
-            'spanish' => [
-                'name'        => 'spanish',
-                'type'        => 'Checkbox',
-                'validation'  => '',
-                'weight'      => 230,
-                'required'    => 0,
-                'label'       => $l10n->localise('Spanish'),
-                'parent'      => 'spoken_language',
-            ],
-            'indonesian' => [
-                'name'        => 'indonesian',
-                'type'        => 'Checkbox',
-                'validation'  => '',
-                'weight'      => 240,
-                'required'    => 0,
-                'label'       => $l10n->localise('Indonesian'),
-                'parent'      => 'spoken_language',
-            ],
-            'korean' => [
-                'name'        => 'korean',
-                'type'        => 'Checkbox',
-                'validation'  => '',
-                'weight'      => 240,
-                'required'    => 0,
-                'label'       => $l10n->localise('Korean'),
-                'parent'      => 'spoken_language',
+                'label'       => $l10n->localise('Other languages spoken'),
+                'parent'      => 'language'
             ],
 
-            #Transportation Information
+            #Travel Information
             'transportation_info' => [
                 'type'        => 'fieldset',
                 'name'        => 'transportation_info',
-                'label'       => $l10n->localise("Transportation Information"),
+                'label'       => $l10n->localise("Travel Information"),
                 'weight'      => 50,
             ],
-            'departure_time'    => [
-                'name'        => 'departure_time',
-                'type'        => 'Datetime',
-                'validation'  => 'Timestamp',
-                'weight'      => 230,
-                'required'    => 1,
-                'label'       => $l10n->localise('Departure time'),
-                'parent'      => 'transportation_info'
-            ],
-            'arrival_time'    => [
-                'name'        => 'arrival_time',
-                'type'        => 'Datetime',
-                'validation'  => 'Timestamp',
-                'weight'      => 240,
-                'required'    => 1,
-                'label'       => $l10n->localise('Arrival time'),
-                'parent'      => 'transportation_info'
-            ],
-            'departure_time_home_country'    => [
-                'name'        => 'departure_time_home_country',
+            'departure_day_home_country'    => [
+                'name'        => 'departure_day_home_country',
                 'type'        => 'Datetime',
                 'validation'  => 'Timestamp',
                 'weight'      => 250,
                 'required'    => 1,
-                'label'       => $l10n->localise('Departure time home country'),
-                'description' => $l10n->localise("Needed for visa purposes"),
+                'label'       => $l10n->localise('Preferred departure day from home country'),
                 'parent'      => 'transportation_info'
             ],
-            'arrival_type' => [
-                'name'        => 'arrival_type',
+            'frequent_flyer_info' => [
+                'name'        => 'frequent_flyer_info',
                 'type'        => 'Text',
                 'validation'  => '',
                 'weight'      => 260,
                 'required'    => 0,
-                'label'       => $l10n->localise('Arrival Type'),
-                'parent'      => 'transportation_info'
-            ],
-            'departure_type' => [
-                'name'        => 'departure_type',
-                'type'        => 'Text',
-                'validation'  => '',
-                'weight'      => 270,
-                'required'    => 0,
-                'label'       => $l10n->localise('Departure Type'),
+                'label'       => $l10n->localise('Frequent flyer information'),
                 'parent'      => 'transportation_info'
             ],
 
-
+            #Additional Information
             'additional_information' => [
                 'type'        => 'fieldset',
                 'name'        => 'additional_information',
@@ -418,7 +320,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 280,
                 'required'    => 0,
-                'label'       => $l10n->localise('Dietary Restrictions'),
+                'label'       => $l10n->localise('Dietary restrictions / mobility restrictions'),
                 'parent'      => 'additional_information'
             ],
             'emergency_contact' => [
@@ -427,7 +329,7 @@ class CRM_Remoteevent_RegistrationProfile_WCRC extends CRM_Remoteevent_Registrat
                 'validation'  => '',
                 'weight'      => 290,
                 'required'    => 0,
-                'label'       => $l10n->localise('Emergency Contact'),
+                'label'       => $l10n->localise('Emergency contact'),
                 'parent'      => 'additional_information'
             ],
             'member_church_name' => [
