@@ -36,4 +36,18 @@ class CRM_Events_Upgrader extends CRM_Events_Upgrader_Base {
         $customData->syncCustomGroup(E::path('resources/custom_group_infos_contact.json'));
         $customData->syncCustomGroup(E::path('resources/custom_group_participant_additional_info.json'));
     }
+
+    /**
+     * Setting custom field inactive
+     *
+     */
+    public function upgrade_0001()
+    {
+        $this->ctx->log->info('Updating data structures');
+        $customData = new CRM_Events_CustomData(E::LONG_NAME);
+        $customData->syncOptionGroup(E::path('resources/custom_group_infos_contact.json'));
+        $customData->syncCustomGroup(E::path('resources/custom_group_participant_additional_info.json'));
+        $customData->syncCustomGroup(E::path('resources/custom_group_additional_name_information'));
+        return true;
+    }
 }
